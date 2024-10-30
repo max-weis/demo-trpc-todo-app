@@ -1,21 +1,27 @@
-import { useState } from "react"
-import { Input } from "@/components/ui/input"
-import { Button } from "@/components/ui/button"
+import { useState } from "react";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import { trpc } from "../lib/trpc.ts";
 
-interface TodoFormProps {
-  onAdd: (text: string) => void
-}
+export function TodoForm() {
+  const [text, setText] = useState("");
 
-export function TodoForm({ onAdd }: TodoFormProps) {
-  const [text, setText] = useState("")
+  const createTodo = trpc.createTodo;
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault()
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
     if (text.trim()) {
-      onAdd(text.trim())
-      setText("")
+      try {
+        await createTodo.create.mutate({
+          title: text.trim(),
+          description: "",
+        });
+        setText("");
+      } catch (error) {
+        console.error("Failed to create todo:", error);
+      }
     }
-  }
+  };
 
   return (
     <form onSubmit={handleSubmit} className="flex space-x-2">
@@ -25,8 +31,14 @@ export function TodoForm({ onAdd }: TodoFormProps) {
         onChange={(e) => setText(e.target.value)}
         placeholder="Add a new todo..."
         className="flex-grow"
+        disabled={createTodo.isLoading}
       />
-      <Button type="submit">Add</Button>
+      <Button
+        type="submit"
+        disabled={createTodo.isLoading}
+      >
+        {createTodo.isLoading ? "Adding..." : "Add"}
+      </Button>
     </form>
-  )
+  );
 }

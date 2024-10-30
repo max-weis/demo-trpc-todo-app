@@ -1,7 +1,7 @@
 import Pool from "pg-pool";
 import { Kysely, PostgresDialect } from "kysely";
 import process from "node:process";
-import { DB } from "./db.d.ts";
+import { DB } from "./types.d.ts";
 
 const dialect = new PostgresDialect({
     pool: new Pool({
