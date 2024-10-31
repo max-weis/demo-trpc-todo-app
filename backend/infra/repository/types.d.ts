@@ -18,7 +18,7 @@ export interface SchemaMigrations {
 
 export interface Todos {
   id: Generated<number>;
-  is_completed: Generated<boolean | null>;
+  is_completed: Generated<boolean>;
   title: string;
 }
 

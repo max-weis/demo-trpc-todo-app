@@ -2,13 +2,21 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Button } from "@/components/ui/button";
 import { Trash2 } from "lucide-react";
 import { Todo } from "../lib/todo";
+import { trpc } from "../lib/trpc";
+import { useState } from "react";
 
 interface TodoItemProps {
-  todo: Todo;
+  todoItem: Todo;
 }
 
-export function TodoItem({ todo }: TodoItemProps) {
+export function TodoItem({ todoItem }: TodoItemProps) {
+  const [todo, setTodo] = useState<Todo>(todoItem);
+
   const toggleTodo = (id: number) => {
+    trpc.toggleTodo.toggle.mutate({
+      id,
+    });
+    setTodo({ ...todo, completed: !todo.completed });
   };
 
   const deleteTodo = (id: number) => {

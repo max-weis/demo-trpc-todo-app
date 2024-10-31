@@ -25,7 +25,7 @@ export function TodoList() {
         {todos.map((todo) => (
           <TodoItem
             key={todo.id}
-            todo={todo}
+            todoItem={todo}
           />
         ))}
       </div>

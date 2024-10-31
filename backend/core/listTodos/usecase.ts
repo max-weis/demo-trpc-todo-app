@@ -11,5 +11,7 @@ export interface listTodosRepository {
 export async function listTodos(
     listTodos: listTodosRepository,
 ): Promise<Todo[]> {
-    return await listTodos();
+    const todos = await listTodos();
+    todos.sort((a, b) => a.id - b.id);
+    return todos;
 }
