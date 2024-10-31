@@ -9,10 +9,10 @@ export interface saveTodoRepository {
     (todo: Todo): void;
 }
 
-export async function createTodo(
+export function createTodo(
     data: { title: string; description?: string },
     saveTodo: saveTodoRepository,
-): Promise<void> {
+): void {
     const newTodo: Todo = {
         id: crypto.randomUUID(),
         title: data.title,
@@ -20,5 +20,5 @@ export async function createTodo(
         completed: false,
     };
 
-    return await saveTodo(newTodo);
+    saveTodo(newTodo);
 }

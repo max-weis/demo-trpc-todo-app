@@ -1,4 +1,4 @@
-import type { Todo } from "../../../core/createTodo/createTodo.ts";
+import type { Todo } from "../../../core/createTodo/usecase.ts";
 import { db } from "../database.ts";
 
 export async function saveTodo(todo: Todo) {

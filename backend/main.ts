@@ -1,31 +1,31 @@
-import process from "node:process";
-import { serve } from "https://deno.land/std@0.181.0/http/server.ts";
+import { createHTTPServer } from "@trpc/server/adapters/standalone";
 import { mainRouter } from "./infra/trpc/router.ts";
-import { fetchRequestHandler } from "@trpc/server/adapters/fetch";
 
-var port = Number(process.env.PORT) || 8080;
+const server = createHTTPServer({
+  router: mainRouter,
+  createContext() {
+    return {};
+  },
+  middleware: (req, res, next) => {
+    res.setHeader("Access-Control-Allow-Origin", "*");
+    res.setHeader("Access-Control-Request-Method", "*");
+    res.setHeader("Access-Control-Allow-Methods", "OPTIONS, GET, POST");
+    res.setHeader("Access-Control-Allow-Headers", "*");
 
-const handler = (req: Request): Response | Promise<Response> => {
-  if (req.method === "OPTIONS") {
-    return new Response(null, {
-      headers: {
-        "Access-Control-Allow-Origin": "http://localhost:" + port,
-        "Access-Control-Allow-Methods": "POST, GET, OPTIONS",
-        "Access-Control-Allow-Headers": "Content-Type, Authorization",
-        "Access-Control-Allow-Credentials": "true",
-      },
-    });
-  }
+    // Handle preflight requests
+    if (req.method === "OPTIONS") {
+      res.writeHead(200);
+      res.end();
+      return;
+    }
 
-  // Handle tRPC requests
-  return fetchRequestHandler({
-    endpoint: "/",
-    req,
-    router: mainRouter,
-    createContext: () => ({}),
-  });
+    next();
+  },
+  maxBodySize: 100 * 1024 * 1024, // 100MB limit
+  batching: {
+    enabled: true,
+  },
+});
 
-  return new Response("Not Found", { status: 404 });
-};
-
-serve(handler, { port: port });
+console.log("🚀 Server listening on port 8080");
+server.listen(8080);
