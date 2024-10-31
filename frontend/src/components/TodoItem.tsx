@@ -6,10 +6,11 @@ import { trpc } from "../lib/trpc";
 import { useState } from "react";
 
 interface TodoItemProps {
+  onDeleted: (id: number) => void;
   todoItem: Todo;
 }
 
-export function TodoItem({ todoItem }: TodoItemProps) {
+export function TodoItem({ todoItem, onDeleted }: TodoItemProps) {
   const [todo, setTodo] = useState<Todo>(todoItem);
 
   const toggleTodo = (id: number) => {
@@ -20,6 +21,10 @@ export function TodoItem({ todoItem }: TodoItemProps) {
   };
 
   const deleteTodo = (id: number) => {
+    trpc.removeTodo.remove.mutate({
+      id,
+    });
+    onDeleted(id);
   };
 
   return (

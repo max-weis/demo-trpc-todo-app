@@ -14,6 +14,10 @@ export function TodoList() {
     setTodos(fetchedTodos);
   };
 
+  const deleteTodo = (id: number) => {
+    setTodos((prevTodos) => prevTodos.filter((todo) => todo.id !== id));
+  };
+
   useEffect(() => {
     fetchTodos();
   }, []);
@@ -25,6 +29,7 @@ export function TodoList() {
         {todos.map((todo) => (
           <TodoItem
             key={todo.id}
+            onDeleted={deleteTodo}
             todoItem={todo}
           />
         ))}
