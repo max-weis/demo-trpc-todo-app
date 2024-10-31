@@ -1,7 +1,6 @@
 export interface Todo {
     id: string;
     title: string;
-    description?: string;
     completed: boolean;
 }
 
@@ -16,7 +15,6 @@ export function createTodo(
     const newTodo: Todo = {
         id: crypto.randomUUID(),
         title: data.title,
-        description: data.description || "",
         completed: false,
     };
 

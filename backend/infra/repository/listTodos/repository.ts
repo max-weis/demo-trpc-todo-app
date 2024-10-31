@@ -8,6 +8,7 @@ export async function listTodos(): Promise<Todo[]> {
         .execute();
 
     return todos.map((todo) => ({
+        id: todo.id,
         title: todo.title,
         completed: todo.is_completed,
     })) as Todo[];

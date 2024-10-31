@@ -6,7 +6,6 @@ export async function saveTodo(todo: Todo) {
         .insertInto("todos")
         .values({
             title: todo.title,
-            description: todo.description,
             is_completed: todo.completed,
         })
         .executeTakeFirst();

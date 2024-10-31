@@ -1,17 +1,17 @@
 import { Checkbox } from "@/components/ui/checkbox";
 import { Button } from "@/components/ui/button";
 import { Trash2 } from "lucide-react";
-import { TodoListItem } from "../lib/todo";
+import { Todo } from "../lib/todo";
 
 interface TodoItemProps {
-  todo: TodoListItem;
+  todo: Todo;
 }
 
 export function TodoItem({ todo }: TodoItemProps) {
-  const toggleTodo = (id: string) => {
+  const toggleTodo = (id: number) => {
   };
 
-  const deleteTodo = (id: string) => {
+  const deleteTodo = (id: number) => {
   };
 
   return (
